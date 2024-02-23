@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/DeliveryInfoLayout"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:layout_margin="10dp">
+
+    <FrameLayout
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@id/iconIdexReorder"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/circle_background">
+
+        <TextView
+            android:id="@+id/numberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/CodeRemisionReorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"
+        android:layout_toEndOf="@+id/iconIdexReorder"
+        android:layout_toRightOf="@+id/iconIdexReorder"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        tools:text="dadawdawdwd" />
+
+    <TextView
+        android:id="@+id/origenReorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="10sp"
+        android:layout_below="@+id/CodeRemisionReorder"
+        android:layout_toRightOf="@+id/iconIdexReorder"
+        android:layout_toEndOf="@+id/iconIdexReorder"
+        tools:text = "wdawd"/>
+
+    <TextView
+        android:id="@+id/StateReorder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="42dp"
+        android:layout_marginLeft="62dp"
+        android:layout_toStartOf="@+id/iconButtonShipping"
+        android:layout_toLeftOf="@+id/iconButtonShipping"
+        android:gravity="center_vertical"
+        android:textStyle="italic"
+        tools:text="DC" />
+
+    <ImageButton
+        android:id="@+id/iconButtonShipping"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="10dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/menu_shipping"
+        android:layout_alignParentEnd="true"
+        />
+
+
+
+</RelativeLayout>

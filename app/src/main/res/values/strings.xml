@@ -15,4 +15,14 @@
     <string name="username_error_no_username">Please enter username</string>
     <string name="username_error_long_username">Username is too long</string>
     <string name="login_error_incorrect_input">Username or login is incorrect. Try again or sign up!</string>
+
+
+
+    <string name="sign_off">Cerrar Sesion</string>
+    <string name="recharge">Recarga</string>
+    <string name="reorder_load">Reordenar carga</string>
+
+
+    <string name="reorder_load_layout">Reordenar tu carga de trabajo </string>
+
 </resources>

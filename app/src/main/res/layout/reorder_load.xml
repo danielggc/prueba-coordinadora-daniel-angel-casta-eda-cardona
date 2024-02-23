@@ -35,20 +35,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="user name"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="cargo"
-                android:textSize="12sp"
-                android:textColor="@android:color/darker_gray" />
 
         </LinearLayout>
 
@@ -75,11 +61,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="carga de trabajo"
-                android:textColorHint="@color/blue"
+                android:text="@string/reorder_load_layout"
                 android:textSize="12sp"
                 android:layout_gravity="end"
-                android:textColor="@android:color/darker_gray"
+                android:textColor="@color/blue"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp" />
 
@@ -93,11 +78,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:background="@android:color/transparent"
-                android:src="@drawable/menu"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                />
+                android:background="@android:color/transparent"
+                android:src="@drawable/save" />
 
 
 
@@ -105,11 +89,13 @@
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/listReorderLoad"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvDeliveryInfo"
+                android:id="@+id/rvReorderLoad"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
