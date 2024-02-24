@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "325275412569",
+    "project_id": "test-coordinadora",
+    "storage_bucket": "test-coordinadora.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325275412569:android:2dc8d0f39941ae69ade948",
+        "android_client_info": {
+          "package_name": "com.cursokotlin.mvvmexample"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjT-jKkEBSEtrE8tdtCTuawk7fTISC3SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

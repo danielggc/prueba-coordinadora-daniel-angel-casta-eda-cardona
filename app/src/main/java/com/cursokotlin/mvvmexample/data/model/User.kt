@@ -9,7 +9,7 @@ class User : BaseObservable() {
     var username: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR)
+            notifyPropertyChanged(BR.username)
         }
 
     @get:Bindable
