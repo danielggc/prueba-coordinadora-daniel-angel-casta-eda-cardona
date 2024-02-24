@@ -18,6 +18,7 @@ import com.cursokotlin.mvvmexample.R
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
 import androidx.navigation.NavController;
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 
@@ -31,8 +32,7 @@ class login : AppCompatActivity() {
 
 
         super.onCreate(savedInstanceState)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_graph) as NavHostFragment
-        navController = navHostFragment.navController
+        navController = findNavController(R.id.nav_host_fragment)
         setupActionBarWithNavController(navController)
 
 
@@ -51,9 +51,7 @@ class login : AppCompatActivity() {
 
 
 
-    override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp() || super.onSupportNavigateUp()
-    }
+
 
 
     private fun observeDataValidation() {
@@ -101,9 +99,7 @@ class login : AppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
+        navController.navigate(R.id.nav_host_fragment)
     }
 
 

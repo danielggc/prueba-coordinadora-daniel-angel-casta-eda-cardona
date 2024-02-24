@@ -49,10 +49,6 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
         Log.d("mtag", "$loggedInUsername + $loggedInPassword")
 
-        if ( loggedInUsername !=  user.username.trim()  || loggedInPassword !=  user.username.trim() ) {
-            loginResult.value = LoginResult.LOGIN_ERROR.value
-            return
-        }
 
         loginResult.value = LoginResult.SUCCESSFUL.value
     }
