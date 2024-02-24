@@ -17,16 +17,24 @@ import com.google.android.material.snackbar.Snackbar
 import com.cursokotlin.mvvmexample.R
 import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.FirebaseAuth
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 
 class login : AppCompatActivity() {
     private lateinit var binding: LoginBinding
     private lateinit var userVM: UserViewModel
     private lateinit var  auth: FirebaseAuth
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
         super.onCreate(savedInstanceState)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_graph) as NavHostFragment
+        navController = navHostFragment.navController
+        setupActionBarWithNavController(navController)
+
 
         FirebaseApp.initializeApp(this)
         binding = LoginBinding.inflate(layoutInflater)
@@ -41,6 +49,11 @@ class login : AppCompatActivity() {
         observeLoginResult()
         }
 
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 
 
     private fun observeDataValidation() {
