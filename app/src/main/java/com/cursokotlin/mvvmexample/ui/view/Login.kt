@@ -1,70 +1,75 @@
 package com.cursokotlin.mvvmexample.ui.view
 
-import android.content.Intent
+import android.app.Application
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import android.view.ViewGroup
+import android.widget.Button
 import androidx.lifecycle.ViewModelProvider
 import com.cursokotlin.mvvmexample.databinding.LoginBinding
-import com.cursokotlin.mvvmexample.databinding.ReorderLoadBinding
-import com.cursokotlin.mvvmexample.ui.viewmodel.QuoteViewModel
 import com.cursokotlin.mvvmexample.ui.viewmodel.UserViewModel
 import com.cursokotlin.mvvmexample.ui.viewmodel.ViewModelFactory
 import com.example.loginpage.util.LoginResult
 import com.google.android.material.snackbar.Snackbar
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.cursokotlin.mvvmexample.R
-import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.FirebaseAuth
-import androidx.navigation.NavController;
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupActionBarWithNavController
 
-class login : AppCompatActivity() {
-    private lateinit var binding: LoginBinding
+class Login : Fragment() {
+
+
     private lateinit var userVM: UserViewModel
-    private lateinit var  auth: FirebaseAuth
-    private lateinit var navController: NavController
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private  var _binding: LoginBinding? = null
+    private val binding get() = _binding!!
 
 
-        super.onCreate(savedInstanceState)
-        navController = findNavController(R.id.nav_host_fragment)
-        setupActionBarWithNavController(navController)
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
 
-        FirebaseApp.initializeApp(this)
-        binding = LoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        val context = requireContext()
+        userVM =  ViewModelProvider(this, ViewModelFactory(context)).get(UserViewModel::class.java)
 
-
-        userVM =
-            ViewModelProvider(this, ViewModelFactory(application)).get(UserViewModel::class.java)
-        binding.userVM = userVM
-        binding.executePendingBindings()
-        observeDataValidation()
-        observeLoginResult()
+        _binding = LoginBinding.inflate(inflater, container, false)
+        _binding?.let { binding ->
+            // Aquí dentro puedes acceder a 'binding' de forma segura como LoginBinding
+            binding.userVM = userVM
         }
 
 
+        observeDataValidation()
+        observeUsernameValidation()
+        observeLoginResult()
+
+        val view = binding.root
+
+        val buttonIdLogin = view.findViewById<Button>(R.id.button_login)
+        buttonIdLogin.setOnClickListener {
+            userVM.login()
+        }
+        return  view
 
 
-
+    }
 
     private fun observeDataValidation() {
         // Reacting to password validation result
-        userVM.passwordValidation.observe(this, Observer {
-            when (it) {
+        userVM.passwordValidation.observe(viewLifecycleOwner, Observer { result ->
+            when (result) {
                 LoginResult.EMPTY_PASSWORD.value -> setPasswordError(getString(R.string.password_error_no_password))
                 LoginResult.SHORT_PASSWORD.value -> setPasswordError(getString(R.string.password_error_short_password))
                 else -> binding.editPassword.error = null
             }
         })
+    }
 
-        userVM.usernameValidation.observe(this, Observer { newValue: Int ->
+    private fun observeUsernameValidation() {
+        userVM.usernameValidation.observe(viewLifecycleOwner, Observer { newValue ->
             when (newValue) {
                 LoginResult.EMPTY_USERNAME.value -> setUserNameError(getString((R.string.username_error_no_username)))
                 LoginResult.LONG_USERNAME.value -> setUserNameError(getString((R.string.username_error_long_username)))
@@ -74,10 +79,10 @@ class login : AppCompatActivity() {
     }
 
     private fun observeLoginResult() {
-        userVM.loginResult.observe(this, Observer {
+        userVM.loginResult.observe(viewLifecycleOwner, Observer {
             when (it) {
                 LoginResult.LOGIN_ERROR.value -> showSnackbar()
-                LoginResult.SUCCESSFUL.value -> startMainActivity();
+                LoginResult.SUCCESSFUL.value -> startMainActivity()
             }
         })
     }
@@ -85,6 +90,7 @@ class login : AppCompatActivity() {
     private fun showSnackbar() {
         Snackbar.make(binding.root, R.string.login_error_incorrect_input, Snackbar.LENGTH_LONG)
             .setAction("Sign up") {
+                // Handle action click if needed
             }.show()
     }
 
@@ -99,7 +105,8 @@ class login : AppCompatActivity() {
     }
 
     private fun startMainActivity() {
-        navController.navigate(R.id.nav_host_fragment)
+
+        findNavController().navigate(R.id.action_blankFragment22_to_blankFragment2)
     }
 
 

@@ -1,11 +1,16 @@
 package com.cursokotlin.mvvmexample.ui.viewmodel
 
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.cursokotlin.mvvmexample.data.QuoteRepository
 import com.cursokotlin.mvvmexample.domain.GetQuotesUseCase
 import com.cursokotlin.mvvmexample.domain.GetRandomQuoteUseCase
 import com.cursokotlin.mvvmexample.domain.model.Quote
+import com.cursokotlin.mvvmexample.domain.model.Remission
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,32 +18,33 @@ import javax.inject.Inject
 @HiltViewModel
 class QuoteViewModel @Inject constructor(
     private val getQuotesUseCase: GetQuotesUseCase,
-    private val getRandomQuoteUseCase: GetRandomQuoteUseCase
+    private val getRandomQuoteUseCase: GetRandomQuoteUseCase,
+
 ) : ViewModel() {
 
-    val quoteModel = MutableLiveData<Quote>()
     val isLoading = MutableLiveData<Boolean>()
 
+
+
+
+    fun getRemissionsInBatches(pageSize: Int, offset: Int): LiveData<List<Remission>> {
+        Log.d("TAG", "getRemissionsInBatches: "+  offset)
+        return liveData{
+            val response = getRandomQuoteUseCase.getRemissionsInBatches(pageSize, offset)
+            emit(response)
+        }
+    }
     fun onCreate() {
+        isLoading.postValue(true)
         viewModelScope.launch {
-            isLoading.postValue(true)
             val result = getQuotesUseCase()
-
-            if (!result.isNullOrEmpty()) {
-                quoteModel.postValue(result[0])
-                isLoading.postValue(false)
-            }
-        }
-    }
-
-    fun randomQuote() {
-        viewModelScope.launch {
-            isLoading.postValue(true)
-            val quote = getRandomQuoteUseCase()
-            quote?.let {
-                quoteModel.value = it
-            }
+            Log.d("sabeDataBAse ", "invoke: " + result)
             isLoading.postValue(false)
+
         }
     }
+
+
+
+
 }

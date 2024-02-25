@@ -1,18 +1,23 @@
 package com.cursokotlin.mvvmexample.domain
 
+import android.util.Log
 import com.cursokotlin.mvvmexample.data.QuoteRepository
-import com.cursokotlin.mvvmexample.data.model.QuoteModel
-import com.cursokotlin.mvvmexample.domain.model.Quote
+import com.cursokotlin.mvvmexample.domain.model.Remission
 import javax.inject.Inject
 
 class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRepository) {
 
-    suspend operator fun invoke(): Quote? {
-        val quotes = repository.getAllQuotesFromDatabase()
-        if (!quotes.isNullOrEmpty()) {
-            val randomNumber = (quotes.indices).random()
-            return quotes[randomNumber]
+
+    suspend fun getRemissionsInBatches( pageSize: Int, offset: Int ) :List<Remission>{
+        Log.d("TAG", "getRemissionsInBatches: "+ pageSize )
+        val list = repository.getRemissionsInBatchesFromDataBAse( pageSize, offset )
+        if( !list.isNullOrEmpty() ){
+            return list
         }
-        return null
+        //TODO aca deben de ir casos de errores
+        return emptyList()
     }
+
+
+
 }

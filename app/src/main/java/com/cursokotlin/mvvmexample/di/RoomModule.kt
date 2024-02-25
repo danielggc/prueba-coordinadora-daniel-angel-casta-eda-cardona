@@ -2,7 +2,7 @@ package com.cursokotlin.mvvmexample.di
 
 import android.content.Context
 import androidx.room.Room
-import com.cursokotlin.mvvmexample.data.database.QuoteDatabase
+import com.cursokotlin.mvvmexample.data.database.RemissionDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,14 +14,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object RoomModule {
 
-    private const val QUOTE_DATABASE_NAME = "quote_database"
+    private const val QUOTE_DATABASE_NAME = "remission_table"
 
     @Singleton
     @Provides
     fun provideRoom(@ApplicationContext context: Context) =
-        Room.databaseBuilder(context, QuoteDatabase::class.java, QUOTE_DATABASE_NAME).build()
+        Room.databaseBuilder(context, RemissionDatabase::class.java, QUOTE_DATABASE_NAME).build()
 
     @Singleton
     @Provides
-    fun provideQuoteDao(db: QuoteDatabase) = db.getQuoteDao()
+    fun provideQuoteDao(db: RemissionDatabase ) = db.getRemissionDao()
 }

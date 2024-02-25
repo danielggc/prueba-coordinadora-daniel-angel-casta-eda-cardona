@@ -11,13 +11,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
+//https://us-central1-cm-tim-goo-test.cloudfunctions.net/prueba_tecnica/carga_trabajo/equipo/77/terminal/2
 object NetworkModule {
 
     @Singleton
     @Provides
     fun provideRetrofit():Retrofit{
         return Retrofit.Builder()
-            .baseUrl("https://drawsomething-59328-default-rtdb.europe-west1.firebasedatabase.app/")
+            .baseUrl("https://us-central1-cm-tim-goo-test.cloudfunctions.net/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

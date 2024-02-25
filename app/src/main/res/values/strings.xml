@@ -17,12 +17,13 @@
     <string name="login_error_incorrect_input">Username or login is incorrect. Try again or sign up!</string>
 
 
-
     <string name="sign_off">Cerrar Sesion</string>
     <string name="recharge">Recarga</string>
     <string name="reorder_load">Reordenar carga</string>
 
 
     <string name="reorder_load_layout">Reordenar tu carga de trabajo </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

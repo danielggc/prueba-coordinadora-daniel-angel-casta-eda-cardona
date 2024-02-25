@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class UserViewModel(application: Application) : AndroidViewModel(application) {
 
+
     var user: User = User()
     val preferences = PreferenceManager.getDefaultSharedPreferences(application)
     var loginResult = MutableLiveData<Int>()
@@ -22,8 +23,9 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     var passwordConfirmation = ObservableField<String>()
 
     fun login() {
-        validatePassword()
+
         validateUsername()
+        validatePassword()
 
         if (isInputValid()) {
             checkIfUserLogged()
@@ -46,15 +48,23 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         val loggedInPassword =
             preferences.getString(PREF_USER_PASSWORD, "")
 
-
         Log.d("mtag", "$loggedInUsername + $loggedInPassword")
 
+        /*
 
+        if (loggedInUsername != user.username.trim() || loggedInPassword != user.password.trim()) {
+            loginResult.value = LoginResult.LOGIN_ERROR.value
+            return
+        }
+        */
         loginResult.value = LoginResult.SUCCESSFUL.value
     }
 
+    //fun isPasswordValid() = user.userPassword.length > 5
 
     private fun validatePassword() {
+        Log.d("hello", "onCreateView: ")
+
         when {
             user.password.isEmpty() -> passwordValidation.value = LoginResult.EMPTY_PASSWORD.value
             user.password.length < 5 -> passwordValidation.value = LoginResult.SHORT_PASSWORD.value
@@ -63,8 +73,11 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun validateUsername() {
+
         when {
-            user.username.isEmpty() -> usernameValidation.value = LoginResult.EMPTY_USERNAME.value
+            user.username.isEmpty() -> {
+                usernameValidation.value = LoginResult.EMPTY_USERNAME.value
+            }
             user.username.length > 10 -> usernameValidation.value = LoginResult.LONG_USERNAME.value
             else -> usernameValidation.value = LoginResult.OK.value
         }
@@ -73,11 +86,5 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     private fun isInputValid() =
         passwordValidation.value == LoginResult.OK.value && usernameValidation.value == LoginResult.OK.value
 
-    private fun isPasswordConfirmed(): Boolean {
-        if (passwordConfirmation.get() != user.password) {
-            passwordValidation.value = LoginResult.PASSWORD_CONFIRMATION_ERROR.value
-            return false
-        }
-        return true
-    }
+
 }
