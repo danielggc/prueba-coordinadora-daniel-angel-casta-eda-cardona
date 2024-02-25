@@ -21,7 +21,9 @@ import androidx.lifecycle.Observer
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursokotlin.mvvmexample.domain.model.Remission
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class BlankFragment3 : Fragment() {
     private var _binding: ReorderLoadBinding? = null
     private val binding get() = _binding!!
@@ -96,7 +98,7 @@ class BlankFragment3 : Fragment() {
     fun setUpRecyclerViewR(){
         mRecyclerView =  binding.root.findViewById (R.id.rvReorderLoad) as RecyclerView
         mRecyclerView.setHasFixedSize(true)
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val remissionList: MutableList<Remission> = mutableListOf(
         )
         mAdapter.RecyclerAdapter( remissionList , requireContext() )
