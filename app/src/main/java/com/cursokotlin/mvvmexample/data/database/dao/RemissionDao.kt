@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 import com.cursokotlin.mvvmexample.data.database.entities.RemissionEntity
 
 @Dao
@@ -11,7 +12,7 @@ interface RemissionDao {
 
     @Query("SELECT * FROM remission_table ORDER BY id DESC")
     suspend fun getAllQuotes():List<RemissionEntity>
-    @Query("SELECT * FROM remission_table ORDER BY id DESC LIMIT :pageSize OFFSET :offset")
+    @Query("SELECT * FROM remission_table ORDER BY `order` DESC LIMIT :pageSize OFFSET :offset")
     suspend fun getRemissionsInBatches(pageSize: Int, offset: Int): List<RemissionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -19,6 +20,9 @@ interface RemissionDao {
 
     @Query("DELETE FROM remission_table")
     suspend fun deleteAllQuotes()
+
+    @Update
+    fun updateOrder(items: List<RemissionEntity>):Int
 }
 
 

@@ -59,15 +59,22 @@ class RecyclerAdapterDeliveryInfo : RecyclerView.Adapter<RecyclerAdapterDelivery
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val superheroName = view.findViewById(R.id.tvSuperhero) as TextView
-        val realName = view.findViewById(R.id.tvRealName) as TextView
-        val publisher = view.findViewById(R.id.tvPublisher) as TextView
-        var expendableLayout : RelativeLayout = itemView.findViewById(R.id.expandable_layout)
-        var linearLayout  = view.findViewById<ImageButton>(R.id.icon_button_user)
-        fun bind(superhero:Remission, context: Context){
-            superheroName.text = superhero.codigoRemision
-            realName.text = superhero.direccionDestinatario
-            publisher.text = superhero.nombreTerminalDestino
+        val codigoRemision                      = view.findViewById(R.id.codigo_remision_item) as TextView
+        val direccionDestinatario               = view.findViewById(R.id.direccion_destinatario_item) as TextView
+        val nombreTerminalDestino               = view.findViewById(R.id.nombre_terminal_destino_item) as TextView
+        var expendableLayout : RelativeLayout   = itemView.findViewById(R.id.expandable_layout)
+        var linearLayout                        = view.findViewById<ImageButton>(R.id.icon_button_user)
+        var cellPone                            = view.findViewById(R.id.telefono_item) as TextView
+        var ownerDestination                    = view.findViewById(R.id.destinatario_item) as TextView
+        var origen                              = view.findViewById(R.id.origen_Info_item) as TextView
+
+        fun bind(remissionData:Remission, context: Context){
+            codigoRemision.text             = remissionData.codigoRemision
+            direccionDestinatario.text      = remissionData.direccionDestinatario
+            nombreTerminalDestino.text      = remissionData.nombreTerminalDestino
+            cellPone.text                   = remissionData.telefonoDestinatario
+            ownerDestination.text           = remissionData.nombreDestinatario
+            origen.text                     = remissionData.oriogen
         }
 
     }

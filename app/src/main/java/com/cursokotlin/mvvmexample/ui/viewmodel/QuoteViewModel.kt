@@ -22,11 +22,23 @@ class QuoteViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    val isLoading = MutableLiveData<Boolean>()
+    val isLoading = MutableLiveData<Boolean>().apply { value = false }
 
 
 
+    fun updateRemissionList(remissionList: List<Remission>) {
+        viewModelScope.launch {
+            try {
+                isLoading.postValue(true)
+                getRandomQuoteUseCase.updateRemissionList(remissionList)
+                isLoading.postValue(false)
+            } catch (e: Exception) {
 
+                Log.e("Error", "Error al actualizar la lista de remisiones: ${e.message}")
+                isLoading.postValue(false)
+            }
+        }
+    }
     fun getRemissionsInBatches(pageSize: Int, offset: Int): LiveData<List<Remission>> {
         Log.d("TAG", "getRemissionsInBatches: "+  offset)
         return liveData{
@@ -34,6 +46,10 @@ class QuoteViewModel @Inject constructor(
             emit(response)
         }
     }
+
+
+
+
     fun onCreate() {
         isLoading.postValue(true)
         viewModelScope.launch {

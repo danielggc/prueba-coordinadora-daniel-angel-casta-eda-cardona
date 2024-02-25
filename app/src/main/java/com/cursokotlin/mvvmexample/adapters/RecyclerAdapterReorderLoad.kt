@@ -56,13 +56,15 @@ class RecyclerAdapterReorderLoad : RecyclerView.Adapter<RecyclerAdapterReorderLo
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val superheroName = view.findViewById(R.id.CodeRemisionReorder) as TextView
         val realName = view.findViewById(R.id.origenReorder) as TextView
-        val publisher = view.findViewById(R.id.StateReorder) as TextView
+        val status = view.findViewById(R.id.StateReorder) as TextView
         var idex = view.findViewById(R.id.numberTextView) as TextView
+
+
         fun bind(deliveryInfo: Remission, context: Context, position: Int){
-            superheroName.text = deliveryInfo.codigoRemision
-            realName.text = deliveryInfo.direccionDestinatario
-            publisher.text = deliveryInfo.nombreTerminalDestino
-            idex.text = position.toString()
+            superheroName.text       = deliveryInfo.codigoRemision
+            realName.text            = deliveryInfo.direccionDestinatario
+            status.text              = deliveryInfo.nombreTerminalDestino
+            idex.text                = deliveryInfo .firstOrder.toString()
         }
 
     }

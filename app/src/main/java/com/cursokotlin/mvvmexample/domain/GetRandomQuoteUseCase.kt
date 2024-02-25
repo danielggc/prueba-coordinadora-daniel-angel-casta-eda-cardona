@@ -19,5 +19,11 @@ class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRep
     }
 
 
+    suspend fun updateRemissionList( remissionList: List<Remission> ){
+        //TODO hacer validaciones aca
+        val response = repository.updateRemissionList(remissionList)
+
+    }
+
 
 }

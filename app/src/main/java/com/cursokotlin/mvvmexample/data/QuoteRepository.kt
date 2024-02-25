@@ -3,6 +3,7 @@ package com.cursokotlin.mvvmexample.data
 import android.util.Log
 import com.cursokotlin.mvvmexample.data.database.dao.RemissionDao
 import com.cursokotlin.mvvmexample.data.database.entities.RemissionEntity
+import com.cursokotlin.mvvmexample.data.database.entities.toDatabase
 import com.cursokotlin.mvvmexample.data.model.ApiResponse
 import com.cursokotlin.mvvmexample.data.network.QuoteService
 import com.cursokotlin.mvvmexample.domain.model.Remission
@@ -17,12 +18,17 @@ class QuoteRepository @Inject constructor(
     suspend fun getAllQuotesFromApi(): List<Remission> {
         val response: ApiResponse = api.getQuotes()
 
-        return response.data.map { e -> e.toDomain() }
+        return  response.data.mapIndexed { index, e -> e.toDomain(index) }
     }
 
     suspend fun getAllQuotesFromDatabase():List<Remission>{
         val response: List<RemissionEntity> = quoteDao.getAllQuotes()
         return response.map { it.toDomain() }
+    }
+
+
+    suspend fun updateRemissionList( remissionList: List<Remission>):Int{
+        return quoteDao.updateOrder( remissionList.map { it.toDatabase() } )
     }
 
     suspend fun  getRemissionsInBatchesFromDataBAse( pageSize: Int, offset: Int ) : List<Remission>{

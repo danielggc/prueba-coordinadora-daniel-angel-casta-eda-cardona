@@ -13,12 +13,16 @@ data class RemissionEntity(
     @ColumnInfo(name = "codigo_remision") val codigoRemision: String,
     @ColumnInfo(name = "direccion_destinatario") val direccionDestinatario: String,
     @ColumnInfo(name = "nombre_terminal_destino") val nombreTerminalDestino: String,
-    @ColumnInfo(name = "telefono_destinatario") val telefonoDestinatario: String
+    @ColumnInfo(name = "telefono_destinatario") val telefonoDestinatario: String,
+    @ColumnInfo(name = "order" ) val order:Int,
+
+
 )
 
 
 fun Remission.toDatabase(): RemissionEntity {
     return RemissionEntity(
+        order = order,
         id = id, // Si id es de tipo String y necesitas convertirlo a Int
         codigoRemision = codigoRemision,
         direccionDestinatario = direccionDestinatario,
