@@ -1,6 +1,7 @@
 package com.shipping.test_cordinadora.ui.view
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.location.Address
 import android.os.Bundle
 import android.view.LayoutInflater
