@@ -9,14 +9,14 @@
 
         <variable
             name="userVM"
-            type="com.cursokotlin.mvvmexample.ui.viewmodel.UserViewModel" />
+            type="com.shipping.test_cordinadora.ui.viewmodel.UserViewModel" />
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.cursokotlin.mvvmexample.ui.view.login">
+        tools:context="com.shipping.test_cordinadora.ui.view.login">
 
 
 
