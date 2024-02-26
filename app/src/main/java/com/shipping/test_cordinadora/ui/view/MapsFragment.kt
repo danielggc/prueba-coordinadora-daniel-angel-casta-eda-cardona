@@ -35,7 +35,7 @@ class MapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout., container, false)
+        return inflater.inflate(R.layout.map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
