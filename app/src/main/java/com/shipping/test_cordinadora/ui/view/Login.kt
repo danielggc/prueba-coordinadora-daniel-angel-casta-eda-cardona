@@ -60,7 +60,7 @@ class Login : Fragment() {
         userVM.passwordValidation.observe(viewLifecycleOwner, Observer { result ->
             when (result) {
                 LoginResult.EMPTY_PASSWORD.value -> setPasswordError(getString(R.string.password_error_no_password))
-                LoginResult.SHORT_PASSWORD.value -> setPasswordError(getString(R.string.password_error_short_password))
+                LoginResult.LONG_PASSWORD.value -> setPasswordError(getString(R.string.password_error_short_password))
                 else -> binding.editPassword.error = null
             }
         })

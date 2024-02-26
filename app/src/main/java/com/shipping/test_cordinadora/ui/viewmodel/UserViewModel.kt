@@ -67,7 +67,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
     private fun validatePassword() {
         when {
             user.password.isEmpty() -> passwordValidation.value = LoginResult.EMPTY_PASSWORD.value
-            user.password.length < 5 -> passwordValidation.value = LoginResult.SHORT_PASSWORD.value
+            user.password.length > 4  -> passwordValidation.value = LoginResult.LONG_PASSWORD.value
             else -> passwordValidation.value = LoginResult.OK.value
         }
     }
