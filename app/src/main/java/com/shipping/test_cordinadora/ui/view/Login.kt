@@ -36,7 +36,6 @@ class Login : Fragment() {
 
         _binding = LoginBinding.inflate(inflater, container, false)
         _binding?.let { binding ->
-            // Aquí dentro puedes acceder a 'binding' de forma segura como LoginBinding
             binding.userVM = userVM
         }
 
