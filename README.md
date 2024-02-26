@@ -59,3 +59,14 @@ Se ha realizado la inyección de dependencias utilizando Dagger/Hilt, lo que ha 
 Para cualquier consulta adicional o retroalimentación, no dudes en contactar al equipo de desarrollo.
 
 ¡Gracias por tu colaboración y por utilizar la aplicación Coordinadora!
+
+
+
+![Captura de pantalla 1](Screenshot_2024-02-26-15-01-04-493_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 2](Screenshot_2024-02-26-15-01-36-155_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 3](Screenshot_2024-02-26-15-02-24-077_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 4](Screenshot_2024-02-26-15-01-21-817_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 5](Screenshot_2024-02-26-15-01-47-145_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 6](Screenshot_2024-02-26-15-02-26-914_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 7](Screenshot_2024-02-26-15-01-29-926_com.cursokotlin.mvvmexample.jpg)
+![Captura de pantalla 8](Screenshot_2024-02-26-15-01-57-515_com.cursokotlin.mvvmexample.jpg)
