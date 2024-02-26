@@ -11,6 +11,8 @@ class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRep
     suspend fun getRemissionsInBatches( pageSize: Int, offset: Int ) :List<Remission>{
         Log.d("TAG", "getRemissionsInBatches: "+ pageSize )
         val list = repository.getRemissionsInBatchesFromDataBAse( pageSize, offset )
+        Log.d("TAG", "getRemissionsInBatches: "+ list )
+
         if( !list.isNullOrEmpty() ){
             return list
         }
@@ -21,7 +23,8 @@ class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRep
 
     suspend fun updateRemissionList( remissionList: List<Remission> ){
         //TODO hacer validaciones aca
-        val response = repository.updateRemissionList(remissionList)
+        val response = repository.actualizarRemisiones(remissionList)
+        Log.d("TAG", "updateRemissionList: $response ")
 
     }
 

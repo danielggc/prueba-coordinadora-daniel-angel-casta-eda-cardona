@@ -3,20 +3,30 @@ package com.cursokotlin.mvvmexample.ui.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.cursokotlin.mvvmexample.domain.model.Remission
 
-class SharedViewModel : ViewModel() {
-    private val _deliveryInfo = MutableLiveData<MutableList<Remission>>()
-    val deliveryInfo: LiveData<MutableList<Remission>> = _deliveryInfo
 
-    fun addRemission(remission: Remission) {
-        val currentList = _deliveryInfo.value ?: mutableListOf()
-        currentList.add(remission)
-        _deliveryInfo.value = currentList
+class MyViewModel : ViewModel() {
+
+    private val _isLoading = MutableLiveData<Boolean>().apply { value = false }
+    val isLoading: LiveData<Boolean> = _isLoading
+
+    private val _shouldUpdate = MutableLiveData<Boolean>().apply { value = false }
+    val shouldUpdate: LiveData<Boolean> = _shouldUpdate
+
+    init {
+        _isLoading.value = false
+        _shouldUpdate.value = false
     }
 
-    fun deleteAllRemissions() {
-        _deliveryInfo.value?.clear()
-        _deliveryInfo.value = _deliveryInfo.value // Actualiza el LiveData para notificar a los observadores
+    fun update() {
+        // Lógica de actualización aquí
+    }
+
+    fun setLoading(loading: Boolean) {
+        _isLoading.value = loading
+    }
+
+    fun setShouldUpdate(update: Boolean) {
+        _shouldUpdate.value = update
     }
 }

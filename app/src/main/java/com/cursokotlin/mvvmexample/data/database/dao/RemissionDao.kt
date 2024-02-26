@@ -12,7 +12,7 @@ interface RemissionDao {
 
     @Query("SELECT * FROM remission_table ORDER BY id DESC")
     suspend fun getAllQuotes():List<RemissionEntity>
-    @Query("SELECT * FROM remission_table ORDER BY `order` DESC LIMIT :pageSize OFFSET :offset")
+    @Query("SELECT * FROM remission_table ORDER BY `order` ASC LIMIT :pageSize OFFSET :offset")
     suspend fun getRemissionsInBatches(pageSize: Int, offset: Int): List<RemissionEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

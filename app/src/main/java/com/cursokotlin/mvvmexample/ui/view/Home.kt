@@ -21,7 +21,6 @@ import com.cursokotlin.mvvmexample.adapters.RecyclerAdapterDeliveryInfo
 import com.cursokotlin.mvvmexample.databinding.HomeBinding
 import com.cursokotlin.mvvmexample.domain.model.Remission
 import com.cursokotlin.mvvmexample.ui.viewmodel.QuoteViewModel
-import com.cursokotlin.mvvmexample.ui.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import android.content.Context
 
@@ -32,21 +31,17 @@ class Home : Fragment() {
     private val quoteViewModel: QuoteViewModel by viewModels()
     val mAdapter : RecyclerAdapterDeliveryInfo = RecyclerAdapterDeliveryInfo()
     lateinit var mRecyclerView : RecyclerView
-    private var currentPage = 1
-    private val pageSize = 10
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private var currentPage = 0
     private  var hasExecuted:Boolean = false
     private lateinit var sharedPreferences: SharedPreferences
-
+    var isloadin:Boolean =false
+    var  shouldUpdate: Boolean = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireActivity().getSharedPreferences("your_shared_prefs", Context.MODE_PRIVATE)
         hasExecuted = sharedPreferences.getBoolean("has_executed", false)
 
-        if (savedInstanceState == null) {
-            sharedPreferences.edit().putBoolean("has_executed", false).apply()
-            hasExecuted = false
-        }
+    
     }
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,11 +61,10 @@ class Home : Fragment() {
     override fun onResume() {
         super.onResume()
         if( !hasExecuted ){
-            Log.d("INITHOME", "onScrolled: ")
+            Log.d("onResume", "onScrolled: ")
+            mAdapter.clear()
             quoteViewModel.onCreate()
-            setUpRecyclerView()
             initDataIntoLIst()
-            initScrollRecycler()
             sharedPreferences.edit().putBoolean("has_executed", true).apply()
             hasExecuted = true
 
@@ -81,18 +75,23 @@ class Home : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer { binding.loading.isVisible  = it })
-
+        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            if( !it ) {
+                mAdapter.clear()
+                currentPage = 0
+                initDataIntoLIst()
+            }
+            binding.loading.isVisible  = it
+        })
+        setUpRecyclerView()
+        initScrollRecycler()
     }
 
     fun setUpRecyclerView(){
         mRecyclerView =  binding.root.findViewById(R.id.rvDeliveryInfo) as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(requireContext() )
-        val remissionList: MutableList<Remission> = mutableListOf(
-
-            )
-        mAdapter.RecyclerAdapter( remissionList , requireContext() )
+        mAdapter.RecyclerAdapter( mutableListOf() , requireContext() )
 
         mRecyclerView.adapter = mAdapter
     }
@@ -129,53 +128,40 @@ class Home : Fragment() {
         popupMenu.show()
     }
 
-
     fun initScrollRecycler(){
         mRecyclerView.addOnScrollListener( object  : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val totalItemCount = layoutManager.itemCount
-                Log.d("userTAG", "onScrolled: " + totalItemCount.toString() +"  " + lastVisibleItemPosition.toString())
-
-                if( totalItemCount <= lastVisibleItemPosition+5 ){
-                    Log.d("userTAG", "onScrolled: ")
-
-                    val dd = quoteViewModel.getRemissionsInBatches(currentPage * pageSize, pageSize)
-
-                    dd.observe( viewLifecycleOwner ) {
-                            remisions ->
-                        Log.d("userTAG", "onScrolled: " +remisions)
-                        remisions.map { mAdapter.add(it) }
-
-                    }
-                    currentPage++
-
+                val totalItemCount = mAdapter.itemCount
+                Log.d("userTAGRELOAD", "onScrolled: [$totalItemCount] [$lastVisibleItemPosition]")
+                if (totalItemCount -1 == lastVisibleItemPosition  && !isloadin  ) {
+                    funtionScroll()
                 }
-            }
 
+            }
         })
     }
 
+    fun funtionScroll(){
+        isloadin = true;
+        quoteViewModel.getRemissionsInBatches(currentPage + 5, currentPage)
+            .observe(viewLifecycleOwner) { remisions ->
+                remisions.map { mAdapter.add(it) }
+                isloadin = false
+            }
+        currentPage += 5
+    }
 
     fun initDataIntoLIst(){
-        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            binding.loading.isVisible  = it
-            if(it == false ){
-                Log.d("INITHOME", "onScrolled: ")
-                val dd = quoteViewModel.getRemissionsInBatches(currentPage, pageSize)
-                dd.observe( viewLifecycleOwner ) {
-                        remisions ->
-                    Log.d("ADDMOREDATA", "onScrolled: " +remisions)
-                    remisions.map { mAdapter.add(it) }
-
-                }
-                currentPage++
-
-            }
-        })
+        Log.d("INITFragment", "onScrolled: ")
+        val dd = quoteViewModel.getRemissionsInBatches( 5, currentPage)
+        dd.observe(viewLifecycleOwner) { remisions ->
+            Log.d("GETDATAVIEW", "onScrolled: " + remisions)
+            remisions.map { mAdapter.add(it) }
+        }
+        currentPage = 5
     }
-
 
 }

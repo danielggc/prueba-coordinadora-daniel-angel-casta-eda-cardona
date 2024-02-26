@@ -22,8 +22,11 @@ class RecyclerAdapterDeliveryInfo : RecyclerView.Adapter<RecyclerAdapterDelivery
     }
 
     fun add(newDeliveryInfo: Remission) {
-        deliveryInfo.add(newDeliveryInfo)
-        notifyItemInserted(deliveryInfo.size - 1)
+        val existingItem = deliveryInfo.find { it.id == newDeliveryInfo.id }
+        if (existingItem == null) {
+            deliveryInfo.add(newDeliveryInfo)
+            notifyItemInserted(deliveryInfo.size - 1)
+        }
     }
     fun RecyclerAdapter(superheros : MutableList<Remission>, context: Context){
         this.context = context
@@ -64,14 +67,14 @@ class RecyclerAdapterDeliveryInfo : RecyclerView.Adapter<RecyclerAdapterDelivery
         val nombreTerminalDestino               = view.findViewById(R.id.nombre_terminal_destino_item) as TextView
         var expendableLayout : RelativeLayout   = itemView.findViewById(R.id.expandable_layout)
         var linearLayout                        = view.findViewById<ImageButton>(R.id.icon_button_user)
-        var cellPone                            = view.findViewById(R.id.telefono_item) as TextView
-        var ownerDestination                    = view.findViewById(R.id.destinatario_item) as TextView
-        var origen                              = view.findViewById(R.id.origen_Info_item) as TextView
+        var cellPone                            = view.findViewById(R.id.telefono_item_r) as TextView
+        var ownerDestination                    = view.findViewById(R.id.destinatario_item_r) as TextView
+        var origen                              = view.findViewById(R.id.origen_Info_item_r) as TextView
 
         fun bind(remissionData:Remission, context: Context){
             codigoRemision.text             = remissionData.codigoRemision
             direccionDestinatario.text      = remissionData.direccionDestinatario
-            nombreTerminalDestino.text      = remissionData.nombreTerminalDestino
+            nombreTerminalDestino.text      = remissionData.firstOrder.toString()
             cellPone.text                   = remissionData.telefonoDestinatario
             ownerDestination.text           = remissionData.nombreDestinatario
             origen.text                     = remissionData.oriogen

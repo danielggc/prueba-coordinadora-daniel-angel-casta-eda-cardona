@@ -27,15 +27,25 @@ class QuoteViewModel @Inject constructor(
 
 
     fun updateRemissionList(remissionList: List<Remission>) {
+        isLoading.postValue(true)
         viewModelScope.launch {
             try {
-                isLoading.postValue(true)
-                getRandomQuoteUseCase.updateRemissionList(remissionList)
-                isLoading.postValue(false)
-            } catch (e: Exception) {
+                val list: List<Remission> = remissionList.mapIndexedNotNull { index, remission ->
+                    if (remission.order != index) {
+                        remission.copy(order = index)
+                    } else {
+                        null
+                    }
+                }
 
+                getRandomQuoteUseCase.updateRemissionList(list)
+                Log.d("SAVEDATA" , "here my data ${remissionList}")
+                isLoading.postValue(false)
+
+            } catch (e: Exception) {
                 Log.e("Error", "Error al actualizar la lista de remisiones: ${e.message}")
                 isLoading.postValue(false)
+
             }
         }
     }

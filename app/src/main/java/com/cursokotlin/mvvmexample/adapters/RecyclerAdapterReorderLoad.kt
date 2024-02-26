@@ -1,10 +1,12 @@
 package com.cursokotlin.mvvmexample.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.cursokotlin.mvvmexample.R
 import com.cursokotlin.mvvmexample.domain.model.Remission
@@ -14,14 +16,21 @@ class RecyclerAdapterReorderLoad : RecyclerView.Adapter<RecyclerAdapterReorderLo
 
     var deliveryInfo: MutableList<Remission>  = ArrayList()
     lateinit var context:Context
+
+    fun getDeliveryInfoList(): List<Remission> {
+        return deliveryInfo.toList()
+    }
     fun clear() {
         deliveryInfo.clear()
         notifyDataSetChanged()
     }
 
     fun add(newDeliveryInfo: Remission) {
-        deliveryInfo.add(newDeliveryInfo)
-        notifyItemInserted(deliveryInfo.size - 1)
+        val existingItem = deliveryInfo.find { it.id == newDeliveryInfo.id }
+        if (existingItem == null) {
+            deliveryInfo.add(newDeliveryInfo)
+            notifyItemInserted(deliveryInfo.size - 1)
+        }
     }
     fun RecyclerAdapter(superheros : MutableList<Remission>, context: Context){
         this.deliveryInfo = superheros

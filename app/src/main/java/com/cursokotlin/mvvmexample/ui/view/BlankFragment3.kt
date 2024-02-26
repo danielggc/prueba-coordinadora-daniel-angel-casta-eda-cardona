@@ -1,5 +1,4 @@
 package com.cursokotlin.mvvmexample.ui.view
-
 import ItemTouchHelperCallback
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,22 +7,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.cursokotlin.mvvmexample.R
 import com.cursokotlin.mvvmexample.adapters.RecyclerAdapterReorderLoad
-import com.cursokotlin.mvvmexample.databinding.HomeBinding
 import com.cursokotlin.mvvmexample.databinding.ReorderLoadBinding
 import com.cursokotlin.mvvmexample.ui.viewmodel.QuoteViewModel
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 
 
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cursokotlin.mvvmexample.domain.model.Remission
-import com.cursokotlin.mvvmexample.ui.viewmodel.SharedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,13 +34,11 @@ class BlankFragment3 : Fragment() {
     private val quoteViewModel: QuoteViewModel by viewModels()
     val mAdapter : RecyclerAdapterReorderLoad = RecyclerAdapterReorderLoad()
     lateinit var mRecyclerView : RecyclerView
-    private var currentPage = 1
-    private val pageSize = 10
-    private val sharedViewModel: SharedViewModel by viewModels()
+    private var currentPage = 0
     private  var hasExecuted:Boolean = false
     private lateinit var sharedPreferences: SharedPreferences
-
-
+    var isloadin:Boolean =false
+    var  shouldUpdate: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,82 +63,93 @@ class BlankFragment3 : Fragment() {
     override fun onResume() {
         super.onResume()
         if( !hasExecuted ){
-            Log.d("INITHOME", "onScrolled: ")
-            setUpRecyclerViewR()
+            Log.d("onResumeFragment", "onScrolled: ")
             initDataIntoLIst()
-            initScrollRecycler()
             sharedPreferences.edit().putBoolean("has_executed", true).apply()
+            hasExecuted = true
+
 
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer { binding.loading.isVisible  = it })
+        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.loading.isVisible  = it
+            if(!it){
+                Log.d("TAG", "onViewCreated: is posible o r not  ")
+                mAdapter.clear()
+                initDataIntoLIst()
+
+            }
+        })
+        setUpRecyclerView()
+        initScrollRecycler()
+
+        val saveButton: ImageView = binding.root.findViewById (R.id.icon_button_save_list)
+        saveButton.setOnClickListener {
+            currentPage = 0
+            quoteViewModel.updateRemissionList(mAdapter.getDeliveryInfoList())
+            quoteViewModel.isLoading.postValue(true)
+
+        }
+
+
+        val getBackButton: ImageView = binding.root.findViewById (R.id.icon_get_back)
+        getBackButton.setOnClickListener {
+            currentPage = 0
+            findNavController().navigate(R.id.action_blankFragment3_to_blankFragment2)
+
+        }
 
     }
 
 
 
-    fun setUpRecyclerViewR(){
+    fun setUpRecyclerView(){
         mRecyclerView =  binding.root.findViewById (R.id.rvReorderLoad) as RecyclerView
         mRecyclerView.setHasFixedSize(true)
         mRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val remissionList: MutableList<Remission> = mutableListOf(
-        )
-        mAdapter.RecyclerAdapter( remissionList , requireContext() )
+        mAdapter.RecyclerAdapter( mutableListOf() , requireContext() )
         mRecyclerView.adapter = mAdapter
         val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback(mAdapter))
         val recyclerView: RecyclerView = binding.root.findViewById(R.id.rvReorderLoad)
         itemTouchHelper.attachToRecyclerView(recyclerView)
-
     }
 
     fun initScrollRecycler(){
-
         mRecyclerView.addOnScrollListener( object  : RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
-                val totalItemCount = layoutManager.itemCount
-                Log.d("userTAG", "onScrolled: " + totalItemCount.toString() +"  " + lastVisibleItemPosition.toString())
-
-                if( totalItemCount <= lastVisibleItemPosition+5 ){
-                    Log.d("userTAG", "onScrolled: ")
-
-                    val dd = quoteViewModel.getRemissionsInBatches(currentPage * pageSize, pageSize)
-
-                    dd.observe( viewLifecycleOwner ) {
-                            remisions ->
-                        Log.d("userTAG", "onScrolled: " +remisions)
-                        remisions.map { mAdapter.add(it) }
-
-                    }
-                    currentPage++
-
+                val totalItemCount = mAdapter.itemCount
+                Log.d("userTAGRELOAD", "onScrolled: [$totalItemCount] [$lastVisibleItemPosition]")
+                if (totalItemCount -1 == lastVisibleItemPosition  && !isloadin  ) {
+                    funtionScroll()
                 }
-            }
 
+            }
         })
     }
 
-    fun initDataIntoLIst(){
-        quoteViewModel.isLoading.observe(viewLifecycleOwner, Observer {
-            binding.loading.isVisible  = it
-            if(it == false ){
-                Log.d("INITHOME", "onScrolled: ")
-                val dd = quoteViewModel.getRemissionsInBatches(currentPage, pageSize)
-                dd.observe( viewLifecycleOwner ) {
-                        remisions ->
-                    Log.d("ADDMOREDATA", "onScrolled: " +remisions)
-                    remisions.map { mAdapter.add(it) }
-
-                }
-                hasExecuted = true
-                currentPage++
-
+    fun funtionScroll(){
+        isloadin = true;
+        quoteViewModel.getRemissionsInBatches(currentPage + 5, currentPage)
+            .observe(viewLifecycleOwner) { remisions ->
+                remisions.map { mAdapter.add(it) }
+                isloadin = false
             }
-        })
+        currentPage += 5
+    }
+
+    fun initDataIntoLIst(){
+        Log.d("INITFragment", "onScrolled: ")
+        val dd = quoteViewModel.getRemissionsInBatches( 5, currentPage)
+        dd.observe(viewLifecycleOwner) { remisions ->
+            Log.d("GETDATAVIEW", "onScrolled: " + remisions)
+            remisions.map { mAdapter.add(it) }
+        }
+        currentPage = 5
     }
 }

@@ -20,6 +20,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_alignParentTop="true">
 
+        <ImageButton
+            android:id="@+id/icon_get_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/arrow_get_back" />
 
         <ImageView
             android:id="@+id/companyIcon"
@@ -76,7 +85,7 @@
                 android:layout_weight="1" />
 
             <ImageButton
-                android:id="@+id/icon_button"
+                android:id="@+id/icon_button_save_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"

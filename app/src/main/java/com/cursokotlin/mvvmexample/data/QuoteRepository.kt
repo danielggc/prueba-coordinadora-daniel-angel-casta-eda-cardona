@@ -9,6 +9,8 @@ import com.cursokotlin.mvvmexample.data.network.QuoteService
 import com.cursokotlin.mvvmexample.domain.model.Remission
 import com.cursokotlin.mvvmexample.domain.model.toDomain
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class QuoteRepository @Inject constructor(
     private val api: QuoteService,
@@ -27,10 +29,12 @@ class QuoteRepository @Inject constructor(
     }
 
 
-    suspend fun updateRemissionList( remissionList: List<Remission>):Int{
-        return quoteDao.updateOrder( remissionList.map { it.toDatabase() } )
+    suspend fun actualizarRemisiones(remissionList: List<Remission>):Int{
+        val updatedRows = withContext(Dispatchers.IO) {
+            quoteDao.updateOrder(remissionList.map { it.toDatabase() })
+        }
+        return updatedRows
     }
-
     suspend fun  getRemissionsInBatchesFromDataBAse( pageSize: Int, offset: Int ) : List<Remission>{
         val response :List<RemissionEntity> = quoteDao.getRemissionsInBatches( pageSize ,offset )
         Log.d("DATABASE", "getRemissionsInBatchesFromDataBAse:  " + response)
