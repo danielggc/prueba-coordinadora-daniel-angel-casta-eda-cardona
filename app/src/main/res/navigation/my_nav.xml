@@ -34,6 +34,18 @@
         <action
             android:id="@+id/action_blankFragment3_to_blankFragment2"
             app:destination="@id/blankFragment2" />
+        <action
+            android:id="@+id/action_blankFragment3_to_view_maps_shipping"
+            app:destination="@id/view_maps_shipping" />
+    </fragment>
+    <fragment
+        android:id="@+id/view_maps_shipping"
+        android:name="com.cursokotlin.mvvmexample.view_maps_shipping"
+        android:label="fragment_view_maps_shipping"
+        tools:layout="@layout/fragment_view_maps_shipping" >
+        <action
+            android:id="@+id/action_view_maps_shipping_to_blankFragment3"
+            app:destination="@id/blankFragment3" />
     </fragment>
 
 </navigation>
