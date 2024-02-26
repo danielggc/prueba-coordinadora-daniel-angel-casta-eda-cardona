@@ -1,11 +1,11 @@
 package com.shipping.test_cordinadora.domain
 
 import android.util.Log
-import com.shipping.test_cordinadora.data.QuoteRepository
+import com.shipping.test_cordinadora.data.RemissionRepository
 import com.shipping.test_cordinadora.domain.model.Remission
 import javax.inject.Inject
 
-class GetRandomQuoteUseCase @Inject constructor(private val repository: QuoteRepository) {
+class GetRandomRemissionUseCase @Inject constructor(private val repository: RemissionRepository) {
 
 
     suspend fun getRemissionsInBatches( pageSize: Int, offset: Int ) :List<Remission>{

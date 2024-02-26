@@ -1,6 +1,6 @@
 package com.shipping.test_cordinadora.domain
 
-import com.shipping.test_cordinadora.data.QuoteRepository
+import com.shipping.test_cordinadora.data.RemissionRepository
 import com.shipping.test_cordinadora.domain.model.Quote
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -10,21 +10,21 @@ import org.junit.Before
 import org.junit.Test
 
 
-class GetRandomQuoteUseCaseTest {
+class GetRandomRemissionUseCaseTest {
     @RelaxedMockK
-    private lateinit var quoteRepository: QuoteRepository
+    private lateinit var remissionRepository: RemissionRepository
 
-    lateinit var getRandomQuoteUseCase: GetRandomQuoteUseCase
+    lateinit var getRandomRemissionUseCase: GetRandomRemissionUseCase
 
     @Before
     fun onBefore() {
         MockKAnnotations.init(this)
-        getRandomQuoteUseCase = GetRandomQuoteUseCase(quoteRepository)
+        getRandomRemissionUseCase = GetRandomRemissionUseCase(remissionRepository)
     }
 
     @Test
     fun `when database is empty then return null`() = runBlocking {
-        coEvery { quoteRepository.getAllQuotesFromDatabase() } returns emptyList()
+        coEvery { remissionRepository.getAllQuotesFromDatabase() } returns emptyList()
 
         val response = getRandomQuoteUseCase()
 
@@ -35,7 +35,7 @@ class GetRandomQuoteUseCaseTest {
     fun `when database is not empty then return quote`() = runBlocking {
         val quoteList = listOf(Quote("Holi", "AristiDevs"))
 
-        coEvery { quoteRepository.getAllQuotesFromDatabase() } returns quoteList
+        coEvery { remissionRepository.getAllQuotesFromDatabase() } returns quoteList
 
         val response = getRandomQuoteUseCase()
 

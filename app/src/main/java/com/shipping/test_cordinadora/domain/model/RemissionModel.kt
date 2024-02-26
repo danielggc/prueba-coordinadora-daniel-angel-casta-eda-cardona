@@ -3,7 +3,7 @@ package com.shipping.test_cordinadora.domain.model
 import com.shipping.test_cordinadora.data.database.entities.RemissionEntity
 import com.shipping.test_cordinadora.data.model.RemissionModel
 
-data class Quote (val quote:String, val author:String)
+
 data class Remission(
     val order:Int,
     val firstOrder:Int,

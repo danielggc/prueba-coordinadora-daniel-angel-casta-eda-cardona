@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
-import com.shipping.test_cordinadora.domain.GetQuotesUseCase
-import com.shipping.test_cordinadora.domain.GetRandomQuoteUseCase
+import com.shipping.test_cordinadora.domain.GetRemissionModelUseCase
+import com.shipping.test_cordinadora.domain.GetRandomRemissionUseCase
 import com.shipping.test_cordinadora.domain.model.Remission
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -15,10 +15,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class QuoteViewModel @Inject constructor(
-    private val getQuotesUseCase: GetQuotesUseCase,
-    private val getRandomQuoteUseCase: GetRandomQuoteUseCase,
+    private val getQuotesUseCase: GetRemissionModelUseCase,
+    private val getRandomRemissionUseCase: GetRandomRemissionUseCase,
 
-) : ViewModel() {
+    ) : ViewModel() {
 
     val isLoading = MutableLiveData<Boolean>().apply { value = false }
 
@@ -36,7 +36,7 @@ class QuoteViewModel @Inject constructor(
                     }
                 }
 
-                getRandomQuoteUseCase.updateRemissionList(list)
+                getRandomRemissionUseCase.updateRemissionList(list)
                 Log.d("SAVEDATA" , "here my data ${remissionList}")
                 isLoading.postValue(false)
 
@@ -50,7 +50,7 @@ class QuoteViewModel @Inject constructor(
     fun getRemissionsInBatches(pageSize: Int, offset: Int): LiveData<List<Remission>> {
         Log.d("TAG", "getRemissionsInBatches: "+  offset)
         return liveData{
-            val response = getRandomQuoteUseCase.getRemissionsInBatches(pageSize, offset)
+            val response = getRandomRemissionUseCase.getRemissionsInBatches(pageSize, offset)
             emit(response)
         }
     }

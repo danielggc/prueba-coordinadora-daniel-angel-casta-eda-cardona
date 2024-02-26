@@ -12,7 +12,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class QuoteRepository @Inject constructor(
+class RemissionRepository @Inject constructor(
     private val api: QuoteService,
     private val quoteDao: RemissionDao
 ) {

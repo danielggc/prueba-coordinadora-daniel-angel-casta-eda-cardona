@@ -1,8 +1,8 @@
 package com.shipping.test_cordinadora
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.shipping.test_cordinadora.domain.GetQuotesUseCase
-import com.shipping.test_cordinadora.domain.GetRandomQuoteUseCase
+import com.shipping.test_cordinadora.domain.GetRemissionModelUseCase
+import com.shipping.test_cordinadora.domain.GetRandomRemissionUseCase
 import com.shipping.test_cordinadora.domain.model.Quote
 import com.shipping.test_cordinadora.ui.viewmodel.QuoteViewModel
 import io.mockk.MockKAnnotations
@@ -20,10 +20,10 @@ import org.junit.Test
 class QuoteViewModelUnitTest {
 
     @RelaxedMockK
-    private lateinit var getQuotesUseCase: GetQuotesUseCase
+    private lateinit var getQuotesUseCase: GetRemissionModelUseCase
 
     @RelaxedMockK
-    private lateinit var getRandomQuoteUseCase: GetRandomQuoteUseCase
+    private lateinit var getRandomRemissionUseCase: GetRandomRemissionUseCase
 
     private lateinit var quoteViewModel: QuoteViewModel
 
@@ -33,7 +33,7 @@ class QuoteViewModelUnitTest {
     @Before
     fun onBefore() {
         MockKAnnotations.init(this)
-        quoteViewModel = QuoteViewModel(getQuotesUseCase, getRandomQuoteUseCase)
+        quoteViewModel = QuoteViewModel(getQuotesUseCase, getRandomRemissionUseCase)
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
@@ -46,7 +46,7 @@ class QuoteViewModelUnitTest {
     fun `when randomQuoteUseCase return a quote set on the livedata`() = runTest {
         //Given
         val quote = Quote("Holi", "Aris")
-        coEvery { getRandomQuoteUseCase() } returns quote
+        coEvery { getRandomRemissionUseCase() } returns quote
 
         //When
         quoteViewModel.randomQuote()
@@ -60,7 +60,7 @@ class QuoteViewModelUnitTest {
         //Given
         val quote = Quote("Aris", "Aris")
         quoteViewModel.quoteModel.value = quote
-        coEvery { getRandomQuoteUseCase() } returns null
+        coEvery { getRandomRemissionUseCase() } returns null
 
         //When
         quoteViewModel.randomQuote()

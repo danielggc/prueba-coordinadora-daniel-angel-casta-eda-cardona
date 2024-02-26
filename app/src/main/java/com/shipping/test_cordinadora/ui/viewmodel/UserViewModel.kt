@@ -27,6 +27,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
 
         validateUsername()
         validatePassword()
+        validateEmail()
 
         if (isInputValid()) {
             checkIfUserLogged()
@@ -52,7 +53,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
         Log.d("mtag", "$loggedInUsername + $loggedInPassword")
         auth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword("danielgrecia7@gmail.com","ddggcc77n").addOnSuccessListener { authResult ->
-            Log.d("login", "Hola, mundo desde Kotlin login!")
+            Log.d("login", "UserViewMode: ${authResult}")
             loginResult.value = LoginResult.SUCCESSFUL.value
         }.addOnFailureListener { e ->
                 Log.d("login", "Error en la autenticación: ${e.message}")
@@ -71,6 +72,14 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             else -> passwordValidation.value = LoginResult.OK.value
         }
     }
+    private fun validateEmail() {
+        val emailPattern = "[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\\.+[a-z]+"
+        val emailMatcher = Regex(emailPattern)
+        when {
+            !emailMatcher.matches(user.username) -> usernameValidation.value = LoginResult.INVALID_EMAIL.value
+            else -> usernameValidation.value = LoginResult.OK.value
+        }
+    }
 
     private fun validateUsername() {
 
@@ -78,7 +87,7 @@ class UserViewModel(application: Application) : AndroidViewModel(application) {
             user.username.isEmpty() -> {
                 usernameValidation.value = LoginResult.EMPTY_USERNAME.value
             }
-            user.username.length > 10 -> usernameValidation.value = LoginResult.LONG_USERNAME.value
+            user.username.length < 7 -> usernameValidation.value = LoginResult.SHORt_USERNAME.value
 
             else -> usernameValidation.value = LoginResult.OK.value
         }
