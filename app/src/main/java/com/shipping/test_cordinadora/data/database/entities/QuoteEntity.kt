@@ -18,6 +18,8 @@ data class RemissionEntity(
     @ColumnInfo(name = "oriogen") val oriogen: String,
     @ColumnInfo(name = "order" ) val order:Int,
     @ColumnInfo(name = "first_Order" ) val firstOrder:Int,
+    @ColumnInfo(name = "latitud" ) val latitud:String,
+    @ColumnInfo(name = "longitud" ) val longitud:String,
 
     )
 
@@ -32,6 +34,8 @@ fun Remission.toDatabase(): RemissionEntity {
         telefonoDestinatario        = telefonoDestinatario,
         nombreDestinatario          = nombreDestinatario,
         oriogen                     = oriogen,
+        latitud                     = latitud ,
+        longitud                    = longitud,
         firstOrder                  = firstOrder
 
 

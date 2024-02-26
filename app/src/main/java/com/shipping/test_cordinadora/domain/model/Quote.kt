@@ -14,7 +14,11 @@ data class Remission(
     val telefonoDestinatario :String,
     val nombreDestinatario:String,
     val oriogen:String,
-    var StatusExpandable:Boolean  = false
+    val latitud :String,
+    val longitud:String,
+    var StatusExpandable:Boolean  = false,
+
+
 )
 
 
@@ -29,6 +33,8 @@ fun RemissionModel.toDomain( index :Int ): Remission {
         destinatario.telefono,
         destinatario.nombre,
         remitente.ciudad,
+        latitud ,
+        longitud,
     )
 }
 
@@ -43,7 +49,9 @@ fun RemissionEntity.toDomain(): Remission {
         telefonoDestinatario  = telefonoDestinatario,
         nombreDestinatario    = nombreDestinatario,
         oriogen               = oriogen,
-        firstOrder            = firstOrder
+        firstOrder            = firstOrder ,
+        latitud               = latitud ,
+        longitud              = longitud,
     )
 }
 

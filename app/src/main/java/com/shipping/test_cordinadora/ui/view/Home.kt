@@ -22,13 +22,17 @@ import com.shipping.test_cordinadora.databinding.HomeBinding
 import com.shipping.test_cordinadora.ui.viewmodel.QuoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import android.content.Context
+import androidx.lifecycle.ViewModelProvider
+import com.shipping.test_cordinadora.ui.viewmodel.RemisionViewModel
 
 @AndroidEntryPoint
 class Home : Fragment() {
     private var _binding: HomeBinding? = null
+    private lateinit var remisionViewModel: RemisionViewModel
+
     private val binding get() = _binding!!
     private val quoteViewModel: QuoteViewModel by viewModels()
-    val mAdapter : RecyclerAdapterDeliveryInfo = RecyclerAdapterDeliveryInfo()
+    private  lateinit var mAdapter : RecyclerAdapterDeliveryInfo
     lateinit var mRecyclerView : RecyclerView
     private var currentPage = 0
     private  var hasExecuted:Boolean = false
@@ -39,9 +43,12 @@ class Home : Fragment() {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireActivity().getSharedPreferences("your_shared_prefs", Context.MODE_PRIVATE)
         hasExecuted = sharedPreferences.getBoolean("has_executed", false)
+        remisionViewModel = ViewModelProvider(requireActivity()).get(RemisionViewModel::class.java)
+        mAdapter = RecyclerAdapterDeliveryInfo( remisionViewModel )
 
     
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +60,7 @@ class Home : Fragment() {
             showMoreActionsMenu(view)
 
         }
+
         return binding.root
     }
 
@@ -82,6 +90,9 @@ class Home : Fragment() {
             }
             binding.loading.isVisible  = it
         })
+        val navController = findNavController()
+
+        mAdapter.setNavController( navController )
         setUpRecyclerView()
         initScrollRecycler()
     }
